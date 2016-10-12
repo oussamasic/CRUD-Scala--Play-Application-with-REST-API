@@ -19,6 +19,13 @@ object User {
   	db.run(users.filter(_.id === id).result.headOption)
   }
 
+  //add New User
+
+   def add(user: UsersRow) = {
+    val userId = users returning users.map(_.id) += user
+    db.run(userId)
+  }
+
   // get all users 
 
   def getAll = {
