@@ -26,6 +26,11 @@ object User {
     db.run(userId)
   }
 
+//delete a user by id
+   def delete(id: Int) = {
+    db.run(users.filter(_.id === id).delete)
+  }
+
   // get all users 
 
   def getAll = {
