@@ -32,6 +32,17 @@ class AsyncController @Inject() (actorSystem: ActorSystem)(implicit exec: Execut
     getFutureMessage(1.second).map { msg => Ok(msg) }
   }
 
+// to inject the database using Slick
+  def setupSlick = Action {implicit request =>
+    println("***" + Array("slick.driver.MySQLDriver", "com.mysql.jdbc.Driver", Play.configuration.getString("mysql.url").getOrElse("URL NOT FOUND"), Play.current.path + "/app", "model", Play.configuration.getString("mysql.properties.user").getOrElse("UserName NOT FOUND"), Play.configuration.getString("mysql.properties.password").getOrElse("password NOT FOUND")).toList)
+    slick.codegen.SourceCodeGenerator.main(
+      Array("slick.driver.MySQLDriver", "com.mysql.jdbc.Driver", Play.configuration.getString("mysql.url").getOrElse("URL NOT FOUND"), Play.current.path + "/app", "model", Play.configuration.getString("mysql.properties.user").getOrElse("UserName NOT FOUND"), Play.configuration.getString("mysql.properties.password").getOrElse("password NOT FOUND"))
+    )
+    
+    // add
+    Ok("success Setup : good Job")
+  }
+// say hello to everybody
    def Hello = Action {
    
     Ok("Hello my name is Oussama Zerouali. Welcome to my World")
