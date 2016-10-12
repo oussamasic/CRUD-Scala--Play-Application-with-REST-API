@@ -1,11 +1,35 @@
 package controllers
 
+
 import akka.actor.ActorSystem
 import javax.inject._
 import play.api._
 import play.api.mvc._
 import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.concurrent.duration._
+import java.io._
+import java.net.InetAddress
+import java.util.Scanner
+import javax.inject.Inject
+
+ 
+import play.api.{Logger, Play}
+import play.api.Play.current
+import play.api.data.Forms._
+import play.api.data._
+import play.api.i18n.Messages
+import play.api.i18n.Messages.Implicits._
+import play.api.libs.json._
+  
+  
+import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.mailer.MailerClient
+import play.api.libs.ws._
+import slick.driver.MySQLDriver.api._
+import scala.io.Source
 
 /**
  * This controller creates an `Action` that demonstrates how to write
@@ -20,17 +44,16 @@ import scala.concurrent.duration._
 @Singleton
 class AsyncController @Inject() (actorSystem: ActorSystem)(implicit exec: ExecutionContext) extends Controller {
 
-  /**
-   * Create an Action that returns a plain text message after a delay
-   * of 1 second.
-   *
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/message`.
-   */
+ //Database Information
+
+  var logdd =""
+  val injector = new GuiceApplicationBuilder().injector
+  val ws:WSClient = injector.instanceOf[WSClient]
+  val db = Database.forConfig("mysql");
   def message = Action.async {
     getFutureMessage(1.second).map { msg => Ok(msg) }
   }
+
 
 // to inject the database using Slick
   def setupSlick = Action {implicit request =>
