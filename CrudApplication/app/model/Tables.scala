@@ -14,25 +14,25 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema = User.schema
+  lazy val schema = Users.schema
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
-  /** Entity class storing rows of table User
+  /** Entity class storing rows of table Users
    *  @param id Database column id SqlType(INT)
    *  @param nom Database column nom SqlType(VARCHAR), Length(45,true), Default(None)
    *  @param prenom Database column prenom SqlType(VARCHAR), Length(45,true), Default(None) */
-  case class UserRow(id: Int, nom: Option[String] = None, prenom: Option[String] = None)
-  /** GetResult implicit for fetching UserRow objects using plain SQL queries */
-  implicit def GetResultUserRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[UserRow] = GR{
+  case class UsersRow(id: Int, nom: Option[String] = None, prenom: Option[String] = None)
+  /** GetResult implicit for fetching UsersRow objects using plain SQL queries */
+  implicit def GetResultUsersRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[UsersRow] = GR{
     prs => import prs._
-    UserRow.tupled((<<[Int], <<?[String], <<?[String]))
+    UsersRow.tupled((<<[Int], <<?[String], <<?[String]))
   }
-  /** Table description of table user. Objects of this class serve as prototypes for rows in queries. */
-  class User(_tableTag: Tag) extends Table[UserRow](_tableTag, "user") {
-    def * = (id, nom, prenom) <> (UserRow.tupled, UserRow.unapply)
+  /** Table description of table users. Objects of this class serve as prototypes for rows in queries. */
+  class Users(_tableTag: Tag) extends Table[UsersRow](_tableTag, "users") {
+    def * = (id, nom, prenom) <> (UsersRow.tupled, UsersRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), nom, prenom).shaped.<>({r=>import r._; _1.map(_=> UserRow.tupled((_1.get, _2, _3)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), nom, prenom).shaped.<>({r=>import r._; _1.map(_=> UsersRow.tupled((_1.get, _2, _3)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT) */
     val id: Rep[Int] = column[Int]("id")
@@ -41,6 +41,6 @@ trait Tables {
     /** Database column prenom SqlType(VARCHAR), Length(45,true), Default(None) */
     val prenom: Rep[Option[String]] = column[Option[String]]("prenom", O.Length(45,varying=true), O.Default(None))
   }
-  /** Collection-like TableQuery object for table User */
-  lazy val User = new TableQuery(tag => new User(tag))
+  /** Collection-like TableQuery object for table Users */
+  lazy val Users = new TableQuery(tag => new Users(tag))
 }
