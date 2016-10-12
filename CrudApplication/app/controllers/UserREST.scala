@@ -43,6 +43,43 @@ class  UserREST extends Controller {
    
  }
 
+ // add new user 
+
+ def addUser = Action.async { implicit request =>
+
+      val userForm = Form(tuple(
+        "prenom" -> optional(text), //1
+        "nom" -> optional(text) //2
+        ))
+
+      userForm.bindFromRequest.fold(
+        formWithErrors => {
+          Future.successful(BadRequest(Json.toJson(Map(
+            "error" -> "missing parameters"
+          ))))
+        },
+        userData => {
+          val newUser = UsersRow(id = 0, prenom = Some(userData._1.get.capitalize),
+            nom = Some(userData._2.get.toUpperCase))
+
+        User.add(newUser).map { user_id =>
+         // val timestamp = Some(System.currentTimeMillis())
+          //val tokenGenerated = Generator.generateToken(Some(newUser.email),timestamp,user_id)
+         // val userStatus = AccountstatusRow(idaccountStatus = 0, status = validUser,token= Some(tokenGenerated) ,flag = Some("RG"),timestamp= Some(System.currentTimeMillis()),usersId = user_id)
+         // StatusObj.add(userStatus)
+
+          
+            Ok(Json.toJson(Map(
+              "message" -> "user created",
+              "user_id" -> user_id.toString
+            )))
+          }
+
+         
+
+        }
+      )
+    }
  //get user by Id
  def getUser(id: Int) = Action.async {
 
