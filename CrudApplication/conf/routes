@@ -15,7 +15,7 @@ GET     /setupSlick                 controllers.AsyncController.setupSlick
 
 GET    /AllUsers                   controllers.UserREST.getUsers
 GET    /user/:id                   controllers.UserREST.getUser(id:Int)
-PUT    /user/register              controllers.UserREST.addUser
+POST    /user/register              controllers.UserREST.addUser
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

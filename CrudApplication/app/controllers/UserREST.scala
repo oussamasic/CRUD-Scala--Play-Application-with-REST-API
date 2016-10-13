@@ -45,7 +45,8 @@ class  UserREST extends Controller {
 
  // add new user 
 
- def addUser = Action.async { implicit request =>
+ def addUser = Action.async(parse.json) { 
+  implicit request =>
 
       val userForm = Form(tuple(
         "prenom" -> optional(text), //1
@@ -103,4 +104,26 @@ class  UserREST extends Controller {
       }
 
  }
+  // example of login or find by names
+
+ def login(nom : String, prenom : String)=Action.async {
+  User.findByNames(prenom,nom).map {userOpt => userOpt match {
+    case Some(user) => {
+      Ok(Json.toJson(Map(
+        "Success" -> "mer7ba biik al m3aleeem")))
+    } 
+    case None => {
+      NotFound(Json.toJson(Map(
+            "error" -> "user doesn't exist"
+          )))
+    } 
+  }
+  
+
+  }
+ }
+
+
+
+
 }
