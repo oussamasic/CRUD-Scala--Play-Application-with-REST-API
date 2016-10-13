@@ -106,15 +106,16 @@ class  UserREST extends Controller {
  }
   // example of login or find by names
 
- def login(nom : String, prenom : String)=Action.async {
+ def login(prenom : String, nom : String)=Action.async {
   User.findByNames(prenom,nom).map {userOpt => userOpt match {
     case Some(user) => {
       Ok(Json.toJson(Map(
-        "Success" -> "mer7ba biik al m3aleeem")))
+        "Success" -> "mer7ba biik al m3aleeem" 
+        )))
     } 
     case None => {
       NotFound(Json.toJson(Map(
-            "error" -> "user doesn't exist"
+            "error" -> "user doesn't exist sir f7aleek"
           )))
     } 
   }

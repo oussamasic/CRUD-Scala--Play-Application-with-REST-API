@@ -22,7 +22,7 @@ object User {
   // find by firstname and lastname
 
   def findByNames(prenom : String, nom : String) = {
-    db.run(users.filter(user => user.nom === nom && user.prenom ===prenom).result.headOption)
+    db.run(users.filter(user => user.nom === nom && user.prenom === prenom).result.headOption)
   }
 
   //add New User
