@@ -19,6 +19,12 @@ object User {
   	db.run(users.filter(_.id === id).result.headOption)
   }
 
+  // find by firstname and lastname
+
+  def findByNames(prenom : String, nom : String) = {
+    db.run(users.filter(user => user.nom === nom && user.prenom ===prenom).result.headOption)
+  }
+
   //add New User
 
    def add(user: UsersRow) = {
