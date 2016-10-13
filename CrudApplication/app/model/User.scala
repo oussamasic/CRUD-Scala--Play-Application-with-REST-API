@@ -29,8 +29,8 @@ object User {
       //  tweetSeq == Seq[(String, play.api.libs.json.JsString)]
       val usersSeq = Seq(
         "id" -> JsNumber(user.id),
-        "code" -> JsString(user.nom.get),
-        "title" -> JsString(user.prenom.get)
+        "nom" -> JsString(user.nom.get),
+        "prenom" -> JsString(user.prenom.get)
      
       )
       JsObject(usersSeq)

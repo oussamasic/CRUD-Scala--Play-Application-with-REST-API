@@ -5,7 +5,7 @@ package controllers
 
   import model.Tables.{UsersRow}
   import model._
- 
+  import model.User.UserFormat
   import play.api.{Logger, Play}
   import play.api.Play.current
   import play.api.data.Forms._
@@ -18,10 +18,39 @@ package controllers
   import scala.util.{Failure, Success}
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.Future
+  import scala.util.{Failure, Success}
   
 
 
 class  UserREST extends Controller {
+
+
+// create a new user
+def CreateNewUser(user : UsersRow) = {
+
+  User.add(user).map {_ match {
+    case Some(id) => 
+    Ok(Json.toJson(Map(
+            "message" -> "success"
+          )))
+     
+    case None =>
+        
+     NotFound(Json.toJson(Map(
+            "error" -> "user doesn't exist"
+          )))
+  }
+  }
+}
+//get all users
+  def kolchi = Action.async {request =>
+    
+    User.getAll.map {
+        users => Ok(JsArray(users.map {
+          user => UserFormat.writes(user)
+        }))
+      }
+    }
   
  def getUsers = Action.async { request =>
       

@@ -14,6 +14,7 @@ GET     /setupSlick                 controllers.AsyncController.setupSlick
 #User
 
 GET    /AllUsers                   controllers.UserREST.getUsers
+GET    /kolchi                   controllers.UserREST.kolchi
 GET    /user/:id                   controllers.UserREST.getUser(id:Int)
 POST    /user/register              controllers.UserREST.addUser
 POST    /user/login                controllers.UserREST.login(nom:String, prenom : String)
