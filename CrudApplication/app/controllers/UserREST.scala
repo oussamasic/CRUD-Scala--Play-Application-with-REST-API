@@ -26,22 +26,7 @@ class  UserREST extends Controller {
 
 
 // create a new user
-def CreateNewUser(user : UsersRow) = {
 
-  User.add(user).map {_ match {
-    case Some(id) => 
-    Ok(Json.toJson(Map(
-            "message" -> "success"
-          )))
-     
-    case None =>
-        
-     NotFound(Json.toJson(Map(
-            "error" -> "user doesn't exist"
-          )))
-  }
-  }
-}
 //get all users
   def kolchi = Action.async {request =>
     
